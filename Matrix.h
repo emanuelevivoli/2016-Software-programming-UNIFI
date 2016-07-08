@@ -1,7 +1,3 @@
-//
-// Created by emanuele.vivoli on 7/8/16.
-//
-
 #ifndef MATRIXTEMPLATE_MATRIX_H
 #define MATRIXTEMPLATE_MATRIX_H
 
