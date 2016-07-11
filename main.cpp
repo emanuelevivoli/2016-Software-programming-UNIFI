@@ -1,8 +1,11 @@
 #include <iostream>
-
 using namespace std;
 
+#include "Matrix.h"
+
 int main() {
-    cout << "Hello, World!" << endl;
+    Matrix<float> m(3, 4);
+    cout << "Rows: " <<  m.getRows() << " Columns: " << m.getColumns();
+
     return 0;
 }
