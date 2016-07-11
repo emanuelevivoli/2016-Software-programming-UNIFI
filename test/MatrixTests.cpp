@@ -2,7 +2,7 @@
 
 #include "../Matrix.h"
 
-TEST(GameCharacter, ConstructorRowColumns) {
+TEST(Matrix, ConstructorRowColumns) {
     Matrix<int> m(3, 4);
 
     ASSERT_EQ(3, m.getRows());
