@@ -184,3 +184,59 @@ TEST_F(MatrixSuite, OperatorBinaryDiv) {
 
         ASSERT_EQ(mul, A /= A);
 }
+
+TEST_F(MatrixSuite, Determinant) {
+        Matrix<int> C(3);
+        C.setValue(1, 0, 0);
+        C.setValue(3, 0, 1);
+        C.setValue(5, 0, 2);
+        C.setValue(7, 1, 0);
+        C.setValue(8, 1, 1);
+        C.setValue(9, 1, 2);
+        C.setValue(11, 2, 0);
+        C.setValue(2, 2, 1);
+        C.setValue(14, 2, 2);
+
+        ASSERT_EQ(C.det(), -273);
+}
+
+TEST_F(MatrixSuite, DeterminantException) {
+        Matrix<int> C(2, 3);
+
+        ASSERT_THROW(C.det(), std::logic_error);
+}
+
+TEST_F(MatrixSuite, Transpose) {
+        Matrix<int> C(3);
+        C.setValue(1, 0, 0);
+        C.setValue(4, 0, 1);
+        C.setValue(7, 0, 2);
+        C.setValue(2, 1, 0);
+        C.setValue(5, 1, 1);
+        C.setValue(8, 1, 2);
+        C.setValue(3, 2, 0);
+        C.setValue(6, 2, 1);
+        C.setValue(9, 2, 2);
+
+        ASSERT_EQ(A.transpose(), C);
+}
+
+TEST_F(MatrixSuite, NotEqual) {
+        ASSERT_TRUE(A != B);
+        ASSERT_FALSE(A == B);
+}
+
+TEST_F(MatrixSuite, Max) {
+        ASSERT_EQ(A.max(), 9);
+        ASSERT_EQ(B.max(), 19);
+}
+
+TEST_F(MatrixSuite, Min) {
+        ASSERT_EQ(A.min(), 1);
+        ASSERT_EQ(B.min(), 11);
+}
+
+TEST_F(MatrixSuite, Rank) {
+        ASSERT_EQ(A.rank(), 2);
+        ASSERT_EQ(B.rank(), 2);
+}
