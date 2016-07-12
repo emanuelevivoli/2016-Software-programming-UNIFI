@@ -113,12 +113,9 @@ TEST_F(MatrixSuite, OperatorMul) {
         mul.setValue(366, 2, 1);
         mul.setValue(390, 2, 2);
 
-        ASSERT_EQ(mul, A * B);
-}
+        Matrix<int> m = A * B;
 
-TEST_F(MatrixSuite, OperatorMulInvalid) {
-        Matrix<int> mul(4);
-        ASSERT_THROW(A * mul, std::logic_error);
+        ASSERT_EQ(mul, m);
 }
 
 TEST_F(MatrixSuite, OperatorDiv) {

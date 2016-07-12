@@ -74,15 +74,17 @@ int main() {
 
     cout << endl;
 
-    //Matrix<float> product = A * B;
+    Matrix<float> product = A * B;
     cout << "A * B =" << endl;
-//    for (int i = 0; i < product.getRows(); i++) {
-//        cout << "  ";
-//        for (int j = 0; j < product.getColumns(); j++) {
-//            cout << product.getValue(i, j) << " ";
-//        }
-//        cout << endl;
-//    }
+    for (int i = 0; i < product.getRows(); i++) {
+        cout << "  ";
+        for (int j = 0; j < product.getColumns(); j++) {
+            cout << product.getValue(i, j) << " ";
+        }
+        cout << endl;
+    }
+
+    cout << endl;
 
     cout << "A.transpose()" << endl;
     A.transpose();

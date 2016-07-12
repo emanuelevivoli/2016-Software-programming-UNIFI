@@ -235,8 +235,15 @@ template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_range) {
     if (columns != rhs.rows)
         throw std::logic_error("Invalid matrix sizes for operator *");
-    // TODO
-    //return T();
+
+    Matrix<T> mul(rows, rhs.columns);
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < rhs.columns; j++)
+            for (int k = 0; k < columns; ++k)
+                mul.ptr[i * rhs.columns + j] += ptr[i * columns + k] * rhs.ptr[k * rhs.columns + j];
+
+    return mul;
 }
 
 template <typename T>
@@ -295,8 +302,19 @@ Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) 
     if (columns != rhs.rows)
         throw std::logic_error("Invalid matrix sizes for operator *");
 
-    // TODO
-    //return T();
+    T* mul = new T[rows * rhs.columns];
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < rhs.columns; j++)
+            for (int k = 0; k < columns; ++k)
+                mul[i * rhs.columns + j] += ptr[i * columns + k] * rhs.ptr[k * rhs.columns + j];
+
+    columns = rhs.columns;
+
+    delete[] ptr;
+    ptr = mul;
+
+    return *this;
 }
 
 template <typename T>
