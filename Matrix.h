@@ -118,23 +118,13 @@ template <typename T>
 Matrix<T> &Matrix<T>::transpose() {
     T* t = new T[rows * columns];
 
-    // TODO rimuovere questi cout
-    for (int i = 0; i < rows * columns; i++)
-        cout << ptr[i] << " ";
-
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < columns; j++) {
-            // TODO trasposta
-            //t[i*columns + j] = ptr[j*rows + i];
+            t[j*rows + i] = ptr[i*columns + j];
         }
 
     delete[] ptr;
     ptr = t;
-
-    // TODO rimuovere questi cout
-    cout << endl;
-    for (int i = 0; i < rows * columns; i++)
-        cout << ptr[i] << " ";
 
     int app = rows;
     rows = columns;
