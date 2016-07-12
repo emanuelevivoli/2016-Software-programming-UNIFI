@@ -118,20 +118,20 @@ TEST_F(MatrixSuite, OperatorMul) {
         ASSERT_EQ(mul, m);
 }
 
-TEST_F(MatrixSuite, OperatorDiv) {
-        Matrix<int> mul(3);
-        mul.setValue(1, 0, 0);
-        mul.setValue(0, 0, 1);
-        mul.setValue(0, 0, 2);
-        mul.setValue(0, 1, 0);
-        mul.setValue(1, 1, 1);
-        mul.setValue(0, 1, 2);
-        mul.setValue(0, 2, 0);
-        mul.setValue(0, 2, 1);
-        mul.setValue(1, 2, 2);
-
-        ASSERT_EQ(mul, A / A);
-}
+//TEST_F(MatrixSuite, OperatorDiv) {
+//        Matrix<int> mul(3);
+//        mul.setValue(1, 0, 0);
+//        mul.setValue(0, 0, 1);
+//        mul.setValue(0, 0, 2);
+//        mul.setValue(0, 1, 0);
+//        mul.setValue(1, 1, 1);
+//        mul.setValue(0, 1, 2);
+//        mul.setValue(0, 2, 0);
+//        mul.setValue(0, 2, 1);
+//        mul.setValue(1, 2, 2);
+//
+//        ASSERT_EQ(mul, A / A);
+//}
 
 TEST_F(MatrixSuite, OperatorIntPow) {
         Matrix<int> mul(3);
@@ -144,7 +144,10 @@ TEST_F(MatrixSuite, OperatorIntPow) {
         mul.setValue(1656, 2, 0);
         mul.setValue(2034, 2, 1);
         mul.setValue(2412, 2, 2);
-        ASSERT_EQ(mul, A ^ 3);
+
+        Matrix<int> pow = A ^ 3;
+
+        ASSERT_EQ(mul, pow);
 }
 
 TEST_F(MatrixSuite, OperatorBinarySum) {

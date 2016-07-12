@@ -257,7 +257,7 @@ Matrix<T> Matrix<T>::operator^(unsigned int pow) const {
     Matrix<T> p(*this);
 
     for (int i = 1; i < pow; i++)
-        p *= *this;
+        p = p * *this;
 
     return p;
 }
@@ -303,6 +303,9 @@ Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) 
         throw std::logic_error("Invalid matrix sizes for operator *");
 
     T* mul = new T[rows * rhs.columns];
+
+    for (int i = 0; i < rows * rhs.columns; i++)
+        mul[i] = 0;
 
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < rhs.columns; j++)
