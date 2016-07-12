@@ -6,7 +6,7 @@
 
 template <typename T>
 class Matrix {
-private:
+protected:
     unsigned int rows;
     unsigned int columns;
     T *ptr;
@@ -15,6 +15,7 @@ public:
     Matrix(unsigned int rows, unsigned int columns);
     Matrix(unsigned int dim);
     Matrix(const Matrix<T>& M);
+
     virtual ~Matrix();
 
     T& max() const;
@@ -37,6 +38,8 @@ public:
     Matrix<T>& operator*(const Matrix<T>& rhs) const throw(std::out_of_range);
     Matrix<T>& operator/(const Matrix<T>& rhs) const throw(std::out_of_range);
     Matrix<T>& operator^(int pow) const;
+
+    Matrix<T>& operator=(const Matrix<T>& rhs);
 
     Matrix<T>& operator+=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator-=(const Matrix<T>& rhs) throw(std::out_of_range);
@@ -197,6 +200,13 @@ Matrix<T> &Matrix<T>::operator^(int pow) const {
     // TODO
     return T();
 }
+
+template <typename T>
+Matrix<T> &Matrix<T>::operator=(const Matrix<T>& rhs){
+    Matrix<T> *lhs = new Matrix(rhs);
+    return *lhs;
+}
+
 
 
 //BYNARY OPERATOR
