@@ -20,9 +20,9 @@ public:
     Matrix(const Matrix<T>& M);
     virtual ~Matrix();
 
-    T& max() const;
-    T& min() const;
-    T& det() const;
+    T max() const;
+    T min() const;
+    T det() const;
     Matrix<T>& transpose();
     unsigned int rank() const;
     unsigned int getRows() const;
@@ -87,7 +87,7 @@ Matrix<T>::~Matrix() {
 }
 
 template <typename T>
-T &Matrix<T>::max() const {
+T Matrix<T>::max() const {
     T max = this->ptr[0];
     for (int i = 1; i < rows * columns; i++)
         if (this->ptr[i] > max)
@@ -96,7 +96,7 @@ T &Matrix<T>::max() const {
 }
 
 template <typename T>
-T &Matrix<T>::min() const {
+T Matrix<T>::min() const {
     T min = this->ptr[0];
     for (int i = 1; i < rows * columns; i++)
         if (this->ptr[i] < min)
@@ -105,13 +105,13 @@ T &Matrix<T>::min() const {
 }
 
 template <typename T>
-T &Matrix<T>::det() const {
+T Matrix<T>::det() const {
     if (rows != columns)
         throw std::logic_error("Matrix must be square in order to calculate determinant.");
 
     // TODO
 
-    return T();
+    return 0;
 }
 
 template <typename T>
