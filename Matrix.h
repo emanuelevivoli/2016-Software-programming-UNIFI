@@ -243,6 +243,8 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const throw(std::out_of_ran
 
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_range) {
+    if (columns != rhs.rows)
+        throw std::logic_error("Invalid matrix sizes for operator *");
     // TODO
     //return T();
 }
@@ -300,6 +302,9 @@ Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &rhs) throw(std::out_of_range) 
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) {
+    if (columns != rhs.rows)
+        throw std::logic_error("Invalid matrix sizes for operator *");
+
     // TODO
     //return T();
 }
