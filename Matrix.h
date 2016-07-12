@@ -30,7 +30,7 @@ public:
     std::pair<unsigned int, unsigned int> size() const;
     Matrix<T> Row(unsigned int row) const;
     Matrix<T> Column(unsigned int column) const;
-    Matrix<T>& diag(unsigned int diag = 0) const;
+    Matrix<T> diag(unsigned int diag = 0) const;
 
     void setValue(const T& value, unsigned int row, unsigned int column) throw(std::out_of_range);
     T& getValue(unsigned int row, unsigned int column) const throw(std::out_of_range);
@@ -183,9 +183,14 @@ Matrix<T> Matrix<T>::Column(unsigned int column) const {
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::diag(unsigned int diag) const {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::diag(unsigned int diag) const {
+    Matrix<T> d(rows, columns);
+
+    for (int i = 0; i < rows; i++)
+        if (i + diag < columns)
+            d.setValue(getValue(i, i + diag), i, i + diag);
+
+    return d;
 }
 
 template <typename T>

@@ -97,6 +97,15 @@ int main() {
         cout << endl;
     }
 
+    Matrix<float> d = B.diag();
+    cout << "diag(B) =" << endl;
+    for (int i = 0; i < d.getRows(); i++) {
+        cout << "  ";
+        for (int j = 0; j < d.getColumns(); j++) {
+            cout << d.getValue(i, j) << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
