@@ -4,9 +4,12 @@
 #include <utility>
 #include <stdexcept>
 
+#include <iostream>
+using namespace std;
+
 template <typename T>
 class Matrix {
-protected:
+private:
     unsigned int rows;
     unsigned int columns;
     T *ptr;
@@ -15,13 +18,12 @@ public:
     Matrix(unsigned int rows, unsigned int columns);
     Matrix(unsigned int dim);
     Matrix(const Matrix<T>& M);
-
     virtual ~Matrix();
 
     T& max() const;
     T& min() const;
     T& det() const;
-    T& transpose();
+    Matrix<T>& transpose();
     unsigned int rank() const;
     unsigned int getRows() const;
     unsigned int getColumns() const;
@@ -33,24 +35,22 @@ public:
     void setValue(const T& value, unsigned int row, unsigned int column) throw(std::out_of_range);
     T& getValue(unsigned int row, unsigned int column) const throw(std::out_of_range);
 
-    Matrix<T>& operator+(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T>& operator-(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T>& operator*(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T>& operator/(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T>& operator^(int pow) const;
+    const Matrix<T>& operator=(const Matrix<T>& rhs);
 
-    Matrix<T>& operator=(const Matrix<T>& rhs);
+    Matrix<T> operator+(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator-(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator*(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator/(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator^(unsigned int pow) const;
 
     Matrix<T>& operator+=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator-=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator*=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator/=(const Matrix<T>& rhs) throw(std::out_of_range);
-    Matrix<T>& operator^=(int pow) const;
+    Matrix<T>& operator^=(unsigned int pow) const;
 
     bool operator==(const Matrix<T>& rhs) const;
     bool operator!=(const Matrix<T>& rhs) const;
-    bool operator<(const Matrix<T>& rhs) const;
-    bool operator>(const Matrix<T>& rhs) const;
 
 };
 
@@ -88,26 +88,58 @@ Matrix<T>::~Matrix() {
 
 template <typename T>
 T &Matrix<T>::max() const {
-    // TODO
-    return T();
+    T max = this->ptr[0];
+    for (int i = 1; i < rows * columns; i++)
+        if (this->ptr[i] > max)
+            max = this->ptr[i];
+    return max;
 }
 
 template <typename T>
 T &Matrix<T>::min() const {
-    // TODO
-    return T();
+    T min = this->ptr[0];
+    for (int i = 1; i < rows * columns; i++)
+        if (this->ptr[i] < min)
+            min = this->ptr[i];
+    return min;
 }
 
 template <typename T>
 T &Matrix<T>::det() const {
+    if (rows != columns)
+        throw std::logic_error("Matrix must be square in order to calculate determinant.");
+
     // TODO
+
     return T();
 }
 
 template <typename T>
-T &Matrix<T>::transpose() {
-    // TODO
-    return T();
+Matrix<T> &Matrix<T>::transpose() {
+    T* t = new T[rows * columns];
+
+    // TODO rimuovere questi cout
+    for (int i = 0; i < rows * columns; i++)
+        cout << ptr[i] << " ";
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++) {
+            // TODO trasposta
+            //t[i*columns + j] = ptr[j*rows + i];
+        }
+
+    delete[] ptr;
+    ptr = t;
+
+    // TODO rimuovere questi cout
+    cout << endl;
+    for (int i = 0; i < rows * columns; i++)
+        cout << ptr[i] << " ";
+
+    int app = rows;
+    rows = columns;
+    columns = rows;
+    return *this;
 }
 
 template <typename T>
@@ -172,78 +204,112 @@ T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(std::o
 //ARITHMETIC OPERATORS
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator+(const Matrix<T> &rhs) const throw(std::out_of_range) {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::operator+(const Matrix<T> &rhs) const throw(std::out_of_range) {
+    if (this->rows != rhs.rows || this->columns != rhs.columns)
+        throw std::out_of_range("Invalid matrix size for operator +");
+
+    Matrix<T> sum(rows, columns);
+
+    for (int i = 0; i < rows * columns; i++)
+        sum.ptr[i] = this->ptr[i] + rhs.ptr[i];
+
+    return sum;
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator-(const Matrix<T> &rhs) const throw(std::out_of_range) {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const throw(std::out_of_range) {
+    if (this->rows != rhs.rows || this->columns != rhs.columns)
+        throw std::out_of_range("Invalid matrix size for operator -");
+
+    Matrix<T> sub(rows, columns);
+
+    for (int i = 0; i < rows * columns; i++)
+        sub.ptr[i] = this->ptr[i] - rhs.ptr[i];
+
+    return sub;
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_range) {
     // TODO
-    return T();
+    //return T();
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator/(const Matrix<T> &rhs) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::operator/(const Matrix<T> &rhs) const throw(std::out_of_range) {
     // TODO
-    return T();
+    //return T();
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator^(int pow) const {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::operator^(unsigned int pow) const {
+    Matrix<T> p(*this);
+
+    for (int i = 1; i < pow; i++)
+        p *= *this;
+
+    return p;
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator=(const Matrix<T>& rhs){
-    Matrix<T> *lhs = new Matrix(rhs);
-    return *lhs;
+const Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
+    this->rows = rhs.rows;
+    this->columns = rhs.columns;
+
+    ptr = new T[rows * columns];
+
+    for (int i = 0; i < rows * columns; i++)
+        ptr[i] = rhs.ptr[i];
 }
 
-
-
-//BYNARY OPERATOR
+//BINARY OPERATOR
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &rhs) throw(std::out_of_range) {
-    // TODO
-    return T();
+    if (this->rows != rhs.rows || this->columns != rhs.columns)
+        throw std::out_of_range("Invalid matrix size for operator +=");
+
+    for (int i = 0; i < rows * columns; i++)
+        this->ptr[i] = this->ptr[i] + rhs.ptr[i];
+
+    return *this;
 }
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &rhs) throw(std::out_of_range) {
-    // TODO
-    return T();
+    if (this->rows != rhs.rows || this->columns != rhs.columns)
+        throw std::out_of_range("Invalid matrix size for operator -=");
+
+    for (int i = 0; i < rows * columns; i++)
+        this->ptr[i] = this->ptr[i] - rhs.ptr[i];
+
+    return *this;
 }
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) {
     // TODO
-    return T();
+    //return T();
 }
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator/=(const Matrix<T> &rhs) throw(std::out_of_range) {
     // TODO
-    return T();
+    //return T();
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator^=(int pow) const {
-    // TODO
-    return T();
+Matrix<T> &Matrix<T>::operator^=(unsigned int pow) const {
+    Matrix<T> p(*this);
+
+    for (int i = 1; i < pow; i++)
+        p *= *this;
+
+    return (Matrix<T> &) *this;
 }
 
 
 //LOGICAL OPERATORS
-
 
 template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &rhs) const {
@@ -258,18 +324,6 @@ bool Matrix<T>::operator==(const Matrix<T> &rhs) const {
 template <typename T>
 bool Matrix<T>::operator!=(const Matrix<T> &rhs) const {
     return !(*this == rhs);
-}
-
-template <typename T>
-bool Matrix<T>::operator<(const Matrix<T> &rhs) const {
-    // TODO
-    return false;
-}
-
-template <typename T>
-bool Matrix<T>::operator>(const Matrix<T> &rhs) const {
-    // TODO
-    return false;
 }
 
 #endif //MATRIXTEMPLATE_MATRIX_H

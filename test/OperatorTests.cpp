@@ -46,7 +46,9 @@ TEST_F(MatrixSuite, OperatorSum) {
         sum.setValue(26, 2, 1);
         sum.setValue(28, 2, 2);
 
-        ASSERT_EQ(sum, A + B);
+        Matrix<int> somma = A + B;
+
+        ASSERT_EQ(sum, somma);
 }
 
 TEST_F(MatrixSuite, OperatorSumInvalid) {
