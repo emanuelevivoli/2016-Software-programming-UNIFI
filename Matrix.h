@@ -28,8 +28,8 @@ public:
     unsigned int getRows() const;
     unsigned int getColumns() const;
     std::pair<unsigned int, unsigned int> size() const;
-    Matrix<T>& Row(unsigned int row) const;
-    Matrix<T>& Column(unsigned int column) const;
+    Matrix<T> Row(unsigned int row) const;
+    Matrix<T> Column(unsigned int column) const;
     Matrix<T>& diag(unsigned int diag = 0) const;
 
     void setValue(const T& value, unsigned int row, unsigned int column) throw(std::out_of_range);
@@ -169,15 +169,27 @@ std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
 
 
 template <typename T>
-Matrix<T> &Matrix<T>::Row(unsigned int row) const {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::Row(unsigned int row) const {
+    if (row < 0 || row >= rows)
+        throw std::out_of_range("Invalid row index");
+
+    Matrix<T> r(1, columns);
+    for (int i = 0; i < columns; i++)
+        r.ptr[i] = ptr[row*columns + i];
+
+    return r;
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::Column(unsigned int column) const {
-    // TODO
-    return T();
+Matrix<T> Matrix<T>::Column(unsigned int column) const {
+    if (column < 0 || column >= columns)
+        throw std::out_of_range("Invalid row index");
+
+    Matrix<T> c(rows, 1);
+    for (int i = 0; i < rows; i++)
+        c.ptr[i] = ptr[i*rows];
+
+    return c;
 }
 
 template <typename T>

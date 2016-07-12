@@ -33,6 +33,31 @@ protected:
 
 };
 
+TEST_F(MatrixSuite, Row) {
+        Matrix<int> r(1, 3);
+        r.setValue(1, 0, 0);
+        r.setValue(2, 0, 1);
+        r.setValue(3, 0, 2);
+
+        Matrix<int> row = A.Row(0);
+
+        ASSERT_EQ(row.getRows(), 1);
+        ASSERT_EQ(row.getColumns(), 3);
+        ASSERT_EQ(row, r);
+}
+
+TEST_F(MatrixSuite, Column) {
+        Matrix<int> r(3, 1);
+        r.setValue(1, 0, 0);
+        r.setValue(4, 1, 0);
+        r.setValue(7, 2, 0);
+
+        Matrix<int> column = A.Column(0);
+
+        ASSERT_EQ(column.getRows(), 3);
+        ASSERT_EQ(column.getColumns(), 1);
+        ASSERT_EQ(column, r);
+}
 
 TEST_F(MatrixSuite, OperatorSum) {
         Matrix<int> sum(3);
