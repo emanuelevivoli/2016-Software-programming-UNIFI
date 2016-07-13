@@ -118,20 +118,31 @@ TEST_F(MatrixSuite, OperatorMul) {
         ASSERT_EQ(mul, m);
 }
 
-//TEST_F(MatrixSuite, OperatorDiv) {
-//        Matrix<int> mul(3);
-//        mul.setValue(1, 0, 0);
-//        mul.setValue(0, 0, 1);
-//        mul.setValue(0, 0, 2);
-//        mul.setValue(0, 1, 0);
-//        mul.setValue(1, 1, 1);
-//        mul.setValue(0, 1, 2);
-//        mul.setValue(0, 2, 0);
-//        mul.setValue(0, 2, 1);
-//        mul.setValue(1, 2, 2);
-//
-//        ASSERT_EQ(mul, A / A);
-//}
+TEST_F(MatrixSuite, OperatorDiv) {
+        Matrix<int> C(3);
+        C.setValue(2, 0, 0);
+        C.setValue(4, 0, 1);
+        C.setValue(6, 0, 2);
+        C.setValue(8, 1, 0);
+        C.setValue(10, 1, 1);
+        C.setValue(12, 1, 2);
+        C.setValue(14, 2, 0);
+        C.setValue(16, 2, 1);
+        C.setValue(18, 2, 2);
+
+        Matrix<int> mul(3);
+        mul.setValue(1, 0, 0);
+        mul.setValue(2, 0, 1);
+        mul.setValue(3, 0, 2);
+        mul.setValue(4, 1, 0);
+        mul.setValue(5, 1, 1);
+        mul.setValue(6, 1, 2);
+        mul.setValue(7, 2, 0);
+        mul.setValue(8, 2, 1);
+        mul.setValue(9, 2, 2);
+
+        ASSERT_EQ(mul, C / 2);
+}
 
 TEST_F(MatrixSuite, OperatorIntPow) {
         Matrix<int> mul(3);
@@ -195,21 +206,6 @@ TEST_F(MatrixSuite, OperatorBinaryMul) {
         ASSERT_EQ(mul, A *= B);
 }
 
-TEST_F(MatrixSuite, OperatorBinaryDiv) {
-        Matrix<int> mul(3);
-        mul.setValue(1, 0, 0);
-        mul.setValue(0, 0, 1);
-        mul.setValue(0, 0, 2);
-        mul.setValue(0, 1, 0);
-        mul.setValue(1, 1, 1);
-        mul.setValue(0, 1, 2);
-        mul.setValue(0, 2, 0);
-        mul.setValue(0, 2, 1);
-        mul.setValue(1, 2, 2);
-
-        ASSERT_EQ(mul, A /= A);
-}
-
 TEST_F(MatrixSuite, Determinant) {
         Matrix<float> C(3);
         C.setValue(1., 0, 0);
@@ -229,6 +225,32 @@ TEST_F(MatrixSuite, DeterminantException) {
         Matrix<int> C(2, 3);
 
         ASSERT_THROW(C.det(), std::logic_error);
+}
+
+TEST_F(MatrixSuite, Reduced) {
+        Matrix<float> C(3);
+        C.setValue(1, 0, 0);
+        C.setValue(3, 0, 1);
+        C.setValue(5, 0, 2);
+        C.setValue(7, 1, 0);
+        C.setValue(8, 1, 1);
+        C.setValue(9, 1, 2);
+        C.setValue(11, 2, 0);
+        C.setValue(2, 2, 1);
+        C.setValue(14, 2, 2);
+
+        Matrix<float> reduced(3);
+        reduced.setValue(1, 0, 0);
+        reduced.setValue(3, 0, 1);
+        reduced.setValue(5, 0, 2);
+        reduced.setValue(0, 1, 0);
+        reduced.setValue(-13, 1, 1);
+        reduced.setValue(-26, 1, 2);
+        reduced.setValue(0, 2, 0);
+        reduced.setValue(0, 2, 1);
+        reduced.setValue(21, 2, 2);
+
+        ASSERT_EQ(C.reduced(), reduced);
 }
 
 TEST_F(MatrixSuite, Transpose) {
@@ -264,4 +286,17 @@ TEST_F(MatrixSuite, Min) {
 TEST_F(MatrixSuite, Rank) {
         ASSERT_EQ(A.rank(), 2);
         ASSERT_EQ(B.rank(), 2);
+
+        Matrix<int> C(3);
+        C.setValue(1, 0, 0);
+        C.setValue(3, 0, 1);
+        C.setValue(5, 0, 2);
+        C.setValue(7, 1, 0);
+        C.setValue(8, 1, 1);
+        C.setValue(9, 1, 2);
+        C.setValue(11, 2, 0);
+        C.setValue(2, 2, 1);
+        C.setValue(14, 2, 2);
+        ASSERT_EQ(C.rank(), 3);
+
 }

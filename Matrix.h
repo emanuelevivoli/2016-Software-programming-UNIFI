@@ -11,8 +11,6 @@ private:
     unsigned int columns;
     T *ptr;
 
-    Matrix<T> gauss() const;
-
 public:
     Matrix(unsigned int rows, unsigned int columns);
     Matrix(unsigned int dim);
@@ -23,6 +21,7 @@ public:
     T min() const;
     T det() const;
     Matrix<T>& transpose();
+    Matrix<T> reduced() const;
     unsigned int rank() const;
     unsigned int getRows() const;
     unsigned int getColumns() const;
@@ -39,13 +38,13 @@ public:
     Matrix<T> operator+(const Matrix<T>& rhs) const throw(std::out_of_range);
     Matrix<T> operator-(const Matrix<T>& rhs) const throw(std::out_of_range);
     Matrix<T> operator*(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T> operator/(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator/(const T& rhs) const;
     Matrix<T> operator^(unsigned int pow) const;
 
     Matrix<T>& operator+=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator-=(const Matrix<T>& rhs) throw(std::out_of_range);
     Matrix<T>& operator*=(const Matrix<T>& rhs) throw(std::out_of_range);
-    Matrix<T>& operator/=(const Matrix<T>& rhs) throw(std::out_of_range);
+    Matrix<T>& operator/=(const T& rhs);
     Matrix<T>& operator^=(unsigned int pow) const;
 
     bool operator==(const Matrix<T>& rhs) const;
@@ -86,7 +85,7 @@ Matrix<T>::~Matrix() {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::gauss() const {
+Matrix<T> Matrix<T>::reduced() const {
     // implements the Gauss reduction algorithm to reduce the matrix
 
     if (rows != columns)
@@ -136,7 +135,7 @@ T Matrix<T>::det() const {
     if (rows != columns)
         throw std::logic_error("Matrix must be square in order to calculate determinant.");
 
-    Matrix<T> r = gauss();
+    Matrix<T> r = reduced();
 
     T det = 1;
     for (int i = 0; i < rows; i++)
@@ -165,8 +164,49 @@ Matrix<T> &Matrix<T>::transpose() {
 
 template <typename T>
 unsigned int Matrix<T>::rank() const {
-    // TODO
-    return 0;
+    unsigned int rank = columns;
+
+    Matrix<T> app(*this);
+
+    int n = rows;
+    float m = 0.;
+    for (int k = 0; k < rank; k++) {
+        if (app.ptr[k * columns + k] != 0) {
+            for (int i = k + 1; i < n; i++) {
+                m = app.ptr[i * columns + k] / app.ptr[k * columns + k];
+
+                for (int j = k + 1; j < n; j++)
+                    app.ptr[i * columns + j] = app.ptr[i * columns + j] - m * app.ptr[k * columns + j];
+
+                app.ptr[i * columns + k] = 0;
+            }
+        } else {
+            bool reduced = true;
+            for (int i = k + 1; i < n; i++) {
+                if (app.ptr[i * columns + k] != 0) {
+                    for (int j = 0; j < rank; i++) {
+                        T temp = app.ptr[k * columns + j];
+                        app.ptr[k * columns + j] = app.ptr[i * columns + j];
+                        app.ptr[i * columns + j] = temp;
+                    }
+
+                    reduced = false;
+                    break;
+                }
+            }
+
+            if (reduced) {
+                rank--;
+
+                for (int i = 0; i < n; i++)
+                    app.ptr[i * columns + k] = app.ptr[i * columns + rank];
+            }
+
+            k--;
+        }
+    }
+
+    return rank;
 }
 
 
@@ -288,9 +328,13 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_ran
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator/(const Matrix<T> &rhs) const throw(std::out_of_range) {
-    // TODO
-    //return T();
+Matrix<T> Matrix<T>::operator/(const T &rhs) const {
+    Matrix<T> div(rows, columns);
+
+    for (int i = 0; i < rows * columns; i++)
+        div.ptr[i] = this->ptr[i] / rhs;
+
+    return div;
 }
 
 template <typename T>
@@ -362,9 +406,11 @@ Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) 
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator/=(const Matrix<T> &rhs) throw(std::out_of_range) {
-    // TODO
-    //return T();
+Matrix<T> &Matrix<T>::operator/=(const T &rhs) {
+    for (int i = 0; i < rows * columns; i++)
+        this->ptr[i] = this->ptr[i] / rhs;
+
+    return *this;
 }
 
 template <typename T>

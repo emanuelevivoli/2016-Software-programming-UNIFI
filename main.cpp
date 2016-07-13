@@ -4,18 +4,18 @@ using namespace std;
 #include "Matrix.h"
 
 int main() {
-    Matrix<float> A(3);
+    Matrix<float> C(3);
     Matrix<float> B(3, 4);
 
-    A.setValue(1, 0, 0);
-    A.setValue(2, 0, 1);
-    A.setValue(3, 0, 2);
-    A.setValue(4, 1, 0);
-    A.setValue(5, 1, 1);
-    A.setValue(6, 1, 2);
-    A.setValue(7, 2, 0);
-    A.setValue(8, 2, 1);
-    A.setValue(9, 2, 2);
+    C.setValue(1., 0, 0);
+    C.setValue(3., 0, 1);
+    C.setValue(5., 0, 2);
+    C.setValue(7., 1, 0);
+    C.setValue(8., 1, 1);
+    C.setValue(9., 1, 2);
+    C.setValue(11., 2, 0);
+    C.setValue(2., 2, 1);
+    C.setValue(14., 2, 2);
 
     B.setValue(1, 0, 0);
     B.setValue(2, 0, 1);
@@ -30,11 +30,11 @@ int main() {
     B.setValue(9, 2, 2);
     B.setValue(3, 2, 3);
 
-    cout << "A =" << endl;
-    for (int i = 0; i < A.getRows(); i++) {
+    cout << "C =" << endl;
+    for (int i = 0; i < C.getRows(); i++) {
         cout << "  ";
-        for (int j = 0; j < A.getColumns(); j++) {
-            cout << A.getValue(i, j) << " ";
+        for (int j = 0; j < C.getColumns(); j++) {
+            cout << C.getValue(i, j) << " ";
         }
         cout << endl;
     }
@@ -52,12 +52,12 @@ int main() {
 
     cout << endl;
 
-    cout << "A.getRows() = " << A.getRows() << endl;
-    cout << "A.getColumns() = " << A.getColumns() << endl;
-    cout << "A.det() = " << A.det() << endl;
-    cout << "A.rank() = " << A.rank() << endl;
-    cout << "A.max() = " << A.max() << endl;
-    cout << "A.min() = " << A.min() << endl;
+    cout << "C.getRows() = " << C.getRows() << endl;
+    cout << "C.getColumns() = " << C.getColumns() << endl;
+    cout << "C.det() = " << C.det() << endl;
+    cout << "C.rank() = " << C.rank() << endl;
+    cout << "C.max() = " << C.max() << endl;
+    cout << "C.min() = " << C.min() << endl;
 
     cout << endl;
 
@@ -74,8 +74,8 @@ int main() {
 
     cout << endl;
 
-    Matrix<float> product = A * B;
-    cout << "A * B =" << endl;
+    Matrix<float> product = C * B;
+    cout << "C * B =" << endl;
     for (int i = 0; i < product.getRows(); i++) {
         cout << "  ";
         for (int j = 0; j < product.getColumns(); j++) {
@@ -86,13 +86,13 @@ int main() {
 
     cout << endl;
 
-    cout << "A.transpose()" << endl;
-    A.transpose();
+    cout << "C.transpose()" << endl;
+    C.transpose();
     cout << "A =" << endl;
-    for (int i = 0; i < A.getRows(); i++) {
+    for (int i = 0; i < C.getRows(); i++) {
         cout << "  ";
-        for (int j = 0; j < A.getColumns(); j++) {
-            cout << A.getValue(i, j) << " ";
+        for (int j = 0; j < C.getColumns(); j++) {
+            cout << C.getValue(i, j) << " ";
         }
         cout << endl;
     }
