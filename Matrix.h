@@ -352,6 +352,7 @@ const Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
     this->rows = rhs.rows;
     this->columns = rhs.columns;
 
+    delete[] ptr;
     ptr = new T[rows * columns];
 
     for (int i = 0; i < rows * columns; i++)
