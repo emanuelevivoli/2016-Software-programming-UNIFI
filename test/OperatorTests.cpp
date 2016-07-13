@@ -1,6 +1,9 @@
 #include "gtest/gtest.h"
 
 #include "../Matrix.h"
+#include "../MatrixException.h"
+#include "../math_exception.h"
+#include "../index_exception.h"
 
 class MatrixSuite : public ::testing::Test {
 public:
@@ -78,7 +81,7 @@ TEST_F(MatrixSuite, OperatorSum) {
 
 TEST_F(MatrixSuite, OperatorSumInvalid) {
         Matrix<int> sum(4);
-        ASSERT_THROW(A + sum, std::logic_error);
+        ASSERT_THROW(A + sum, math_exception);
 }
 
 TEST_F(MatrixSuite, OperatorSub) {
@@ -98,7 +101,7 @@ TEST_F(MatrixSuite, OperatorSub) {
 
 TEST_F(MatrixSuite, OperatorSubInvalid) {
         Matrix<int> sub(4);
-        ASSERT_THROW(A - sub, std::logic_error);
+        ASSERT_THROW(A - sub, math_exception);
 }
 
 TEST_F(MatrixSuite, OperatorMul) {
@@ -224,7 +227,7 @@ TEST_F(MatrixSuite, Determinant) {
 TEST_F(MatrixSuite, DeterminantException) {
         Matrix<int> C(2, 3);
 
-        ASSERT_THROW(C.det(), std::logic_error);
+        ASSERT_THROW(C.det(), math_exception);
 }
 
 TEST_F(MatrixSuite, Reduced) {

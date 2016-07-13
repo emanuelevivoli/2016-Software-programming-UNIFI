@@ -2,7 +2,8 @@
 #define MATRIXTEMPLATE_MATRIX_H
 
 #include <utility>
-#include <stdexcept>
+#include "math_exception.h"
+#include "index_exception.h"
 
 template <typename T>
 class Matrix {
@@ -19,31 +20,31 @@ public:
 
     T max() const;
     T min() const;
-    T det() const;
+    T det() const throw(math_exception);
     Matrix<T>& transpose();
-    Matrix<T> reduced() const;
+    Matrix<T> reduced() const throw(math_exception);
     unsigned int rank() const;
     unsigned int getRows() const;
     unsigned int getColumns() const;
     std::pair<unsigned int, unsigned int> size() const;
-    Matrix<T> Row(unsigned int row) const throw(std::out_of_range);
-    Matrix<T> Column(unsigned int column) const throw(std::out_of_range);
-    Matrix<T> diag(int diag = 0) const throw(std::out_of_range);
+    Matrix<T> Row(unsigned int row) const throw(index_exception);
+    Matrix<T> Column(unsigned int column) const throw(index_exception);
+    Matrix<T> diag(int diag = 0) const throw(index_exception);
 
-    void setValue(const T& value, unsigned int row, unsigned int column) throw(std::out_of_range);
-    T& getValue(unsigned int row, unsigned int column) const throw(std::out_of_range);
+    void setValue(const T& value, unsigned int row, unsigned int column) throw(index_exception);
+    T& getValue(unsigned int row, unsigned int column) const throw(index_exception);
 
     const Matrix<T>& operator=(const Matrix<T>& rhs);
 
-    Matrix<T> operator+(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T> operator-(const Matrix<T>& rhs) const throw(std::out_of_range);
-    Matrix<T> operator*(const Matrix<T>& rhs) const throw(std::out_of_range);
+    Matrix<T> operator+(const Matrix<T>& rhs) const throw(math_exception);
+    Matrix<T> operator-(const Matrix<T>& rhs) const throw(math_exception);
+    Matrix<T> operator*(const Matrix<T>& rhs) const throw(math_exception);
     Matrix<T> operator/(const T& rhs) const;
     Matrix<T> operator^(unsigned int pow) const;
 
-    Matrix<T>& operator+=(const Matrix<T>& rhs) throw(std::out_of_range);
-    Matrix<T>& operator-=(const Matrix<T>& rhs) throw(std::out_of_range);
-    Matrix<T>& operator*=(const Matrix<T>& rhs) throw(std::out_of_range);
+    Matrix<T>& operator+=(const Matrix<T>& rhs) throw(math_exception);
+    Matrix<T>& operator-=(const Matrix<T>& rhs) throw(math_exception);
+    Matrix<T>& operator*=(const Matrix<T>& rhs) throw(math_exception);
     Matrix<T>& operator/=(const T& rhs);
     Matrix<T>& operator^=(unsigned int pow) const;
 
@@ -85,11 +86,11 @@ Matrix<T>::~Matrix() {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::reduced() const {
+Matrix<T> Matrix<T>::reduced() const throw(math_exception){
     // implements the Gauss reduction algorithm to reduce the matrix
 
     if (rows != columns)
-        throw std::logic_error("Matrix must be square");
+        throw math_exception("Matrix must be square");
 
     Matrix<T> app(*this);
 
@@ -97,7 +98,7 @@ Matrix<T> Matrix<T>::reduced() const {
     float m = 0.;
     for (int k = 0; k < n-1; k++) {
         if (app.ptr[k * columns + k] == 0)
-            throw std::logic_error("Singular matrix");
+            throw math_exception("Singular matrix");
 
         for (int i = k+1; i < n; i++) {
             m = app.ptr[i * columns + k] / app.ptr[k * columns + k];
@@ -131,9 +132,9 @@ T Matrix<T>::min() const {
 }
 
 template <typename T>
-T Matrix<T>::det() const {
+T Matrix<T>::det() const throw(math_exception){
     if (rows != columns)
-        throw std::logic_error("Matrix must be square in order to calculate determinant.");
+        throw math_exception("Matrix must be square in order to calculate determinant.");
 
     Matrix<T> r = reduced();
 
@@ -230,9 +231,9 @@ std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
 
 
 template <typename T>
-Matrix<T> Matrix<T>::Row(unsigned int row) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::Row(unsigned int row) const throw(index_exception) {
     if (row < 0 || row >= rows)
-        throw std::out_of_range("Invalid row index");
+        throw index_exception("Invalid row index");
 
     Matrix<T> r(1, columns);
     for (int i = 0; i < columns; i++)
@@ -242,9 +243,9 @@ Matrix<T> Matrix<T>::Row(unsigned int row) const throw(std::out_of_range) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::Column(unsigned int column) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::Column(unsigned int column) const throw(index_exception) {
     if (column < 0 || column >= columns)
-        throw std::out_of_range("Invalid row index");
+        throw index_exception("Invalid row index");
 
     Matrix<T> c(rows, 1);
     for (int i = 0; i < rows; i++)
@@ -254,11 +255,11 @@ Matrix<T> Matrix<T>::Column(unsigned int column) const throw(std::out_of_range) 
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::diag(int diag) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::diag(int diag) const throw(index_exception) {
     Matrix<T> d(rows, columns);
 
     if ((diag < 0 && abs(diag) >= rows ) || (diag > 0 && abs(diag) >= columns))
-        throw std::out_of_range("Cannot find diagonal");
+        throw index_exception("Cannot find diagonal");
 
     for (int i = 0; i < rows; i++) {
         int col = i + diag;
@@ -270,16 +271,16 @@ Matrix<T> Matrix<T>::diag(int diag) const throw(std::out_of_range) {
 }
 
 template <typename T>
-void Matrix<T>::setValue(const T &value, unsigned int row, unsigned int column) throw(std::out_of_range) {
+void Matrix<T>::setValue(const T &value, unsigned int row, unsigned int column) throw(index_exception) {
     if (row < 0 || row >= rows || column < 0 || column >= columns)
-        throw std::out_of_range("Invalid index");
+        throw index_exception("Invalid index");
     ptr[row * columns + column] = value;
 }
 
 template <typename T>
-T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(std::out_of_range) {
+T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(index_exception) {
     if (row < 0 || row >= rows || column < 0 || column >= columns)
-        throw std::out_of_range("Invalid index");
+        throw index_exception("Invalid index");
     return ptr[row*columns + column];
 }
 
@@ -287,9 +288,9 @@ T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(std::o
 //ARITHMETIC OPERATORS
 
 template <typename T>
-Matrix<T> Matrix<T>::operator+(const Matrix<T> &rhs) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::operator+(const Matrix<T> &rhs) const throw(math_exception) {
     if (this->rows != rhs.rows || this->columns != rhs.columns)
-        throw std::out_of_range("Invalid matrix size for operator +");
+        throw math_exception("Invalid matrix size for operator +");
 
     Matrix<T> sum(rows, columns);
 
@@ -300,9 +301,9 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &rhs) const throw(std::out_of_ran
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const throw(math_exception) {
     if (this->rows != rhs.rows || this->columns != rhs.columns)
-        throw std::out_of_range("Invalid matrix size for operator -");
+        throw math_exception("Invalid matrix size for operator -");
 
     Matrix<T> sub(rows, columns);
 
@@ -313,9 +314,9 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const throw(std::out_of_ran
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(std::out_of_range) {
+Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const throw(math_exception) {
     if (columns != rhs.rows)
-        throw std::logic_error("Invalid matrix sizes for operator *");
+        throw math_exception("Invalid matrix sizes for operator *");
 
     Matrix<T> mul(rows, rhs.columns);
 
@@ -362,9 +363,9 @@ const Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
 //BINARY OPERATOR
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &rhs) throw(std::out_of_range) {
+Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &rhs) throw(math_exception) {
     if (this->rows != rhs.rows || this->columns != rhs.columns)
-        throw std::out_of_range("Invalid matrix size for operator +=");
+        throw math_exception("Invalid matrix size for operator +=");
 
     for (int i = 0; i < rows * columns; i++)
         this->ptr[i] = this->ptr[i] + rhs.ptr[i];
@@ -373,9 +374,9 @@ Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &rhs) throw(std::out_of_range) 
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &rhs) throw(std::out_of_range) {
+Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &rhs) throw(math_exception) {
     if (this->rows != rhs.rows || this->columns != rhs.columns)
-        throw std::out_of_range("Invalid matrix size for operator -=");
+        throw math_exception("Invalid matrix size for operator -=");
 
     for (int i = 0; i < rows * columns; i++)
         this->ptr[i] = this->ptr[i] - rhs.ptr[i];
@@ -384,9 +385,9 @@ Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &rhs) throw(std::out_of_range) 
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(std::out_of_range) {
+Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &rhs) throw(math_exception) {
     if (columns != rhs.rows)
-        throw std::logic_error("Invalid matrix sizes for operator *");
+        throw math_exception("Invalid matrix sizes for operator *");
 
     T* mul = new T[rows * rhs.columns];
 
