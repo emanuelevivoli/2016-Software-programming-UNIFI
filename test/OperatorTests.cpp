@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 
 #include "../Matrix.h"
-#include "../MatrixException.h"
 #include "../math_exception.h"
 #include "../index_exception.h"
 
@@ -121,6 +120,11 @@ TEST_F(MatrixSuite, OperatorMul) {
         ASSERT_EQ(mul, m);
 }
 
+TEST_F(MatrixSuite, OperatorMulInvalid) {
+        Matrix<int> mul(4);
+        ASSERT_THROW((A * mul), math_exception);
+}
+
 TEST_F(MatrixSuite, OperatorDiv) {
         Matrix<int> C(3);
         C.setValue(2, 0, 0);
@@ -179,6 +183,11 @@ TEST_F(MatrixSuite, OperatorBinarySum) {
         ASSERT_EQ(sum, A += B);
 }
 
+TEST_F(MatrixSuite, OperatorBinarySumInvalid) {
+        Matrix<int> sum(4);
+        ASSERT_THROW(A += sum, math_exception);
+}
+
 TEST_F(MatrixSuite, OperatorBinarySub) {
         Matrix<int> sub(3);
         sub.setValue(-10, 0, 0);
@@ -194,6 +203,11 @@ TEST_F(MatrixSuite, OperatorBinarySub) {
         ASSERT_EQ(sub, A -= B);
 }
 
+TEST_F(MatrixSuite, OperatorBinarySubInvalid) {
+        Matrix<int> sub(4);
+        ASSERT_THROW(A -= sub, math_exception);
+}
+
 TEST_F(MatrixSuite, OperatorBinaryMul) {
         Matrix<int> mul(3);
         mul.setValue(90, 0, 0);
@@ -207,6 +221,11 @@ TEST_F(MatrixSuite, OperatorBinaryMul) {
         mul.setValue(390, 2, 2);
 
         ASSERT_EQ(mul, A *= B);
+}
+
+TEST_F(MatrixSuite, OperatorBinaryMulInvalid) {
+        Matrix<int> mul(4);
+        ASSERT_THROW(A *= mul, math_exception);
 }
 
 TEST_F(MatrixSuite, Determinant) {
@@ -254,6 +273,20 @@ TEST_F(MatrixSuite, Reduced) {
         reduced.setValue(21, 2, 2);
 
         ASSERT_EQ(C.reduced(), reduced);
+}
+
+TEST_F(MatrixSuite, ReducedException) {
+        Matrix<int> C(3);
+        C.setValue(1, 0, 0);
+        C.setValue(2, 0, 1);
+        C.setValue(3, 0, 2);
+        C.setValue(1, 1, 0);
+        C.setValue(2, 1, 1);
+        C.setValue(3, 1, 2);
+        C.setValue(1, 2, 0);
+        C.setValue(4, 2, 1);
+        C.setValue(3, 2, 2);
+        ASSERT_THROW(C.reduced(), math_exception);
 }
 
 TEST_F(MatrixSuite, Transpose) {
