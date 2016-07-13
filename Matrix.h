@@ -54,27 +54,23 @@ public:
 
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int columns) : rows(rows), columns(columns) {
-    ptr = new T[rows * columns];
+Matrix<T>::Matrix(unsigned int rows, unsigned int columns)
+        : rows(rows), columns(columns) , ptr(new T[rows * columns]) {
 
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = 0;
 }
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int dim): rows(dim), columns(dim) {
-    ptr = new T[rows * columns];
-
+Matrix<T>::Matrix(unsigned int dim)
+        : rows(dim), columns(dim), ptr(new T[rows * columns]) {
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = 0;
 }
 
 template <typename T>
-Matrix<T>::Matrix(const Matrix<T>& M) {
-    rows = M.rows;
-    columns = M.columns;
-    ptr = new T[rows * columns];
-
+Matrix<T>::Matrix(const Matrix<T>& M)
+        : rows(M.rows), columns(M.columns), ptr(new T[rows * columns]) {
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = M.ptr[i];
 }
@@ -169,7 +165,7 @@ unsigned int Matrix<T>::rank() const {
     Matrix<T> app(*this);
 
     int n = rows;
-    float m = 0.;
+    float m = 0;
     for (int k = 0; k < rank; k++) {
         if (app.ptr[k * columns + k] != 0) {
             for (int i = k + 1; i < n; i++) {
@@ -180,7 +176,7 @@ unsigned int Matrix<T>::rank() const {
 
                 app.ptr[i * columns + k] = 0;
             }
-        } else {
+        } else {     // if == 0
             bool reduced = true;
             for (int i = k + 1; i < n; i++) {
                 if (app.ptr[i * columns + k] != 0) {
