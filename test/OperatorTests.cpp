@@ -211,16 +211,16 @@ TEST_F(MatrixSuite, OperatorBinaryDiv) {
 }
 
 TEST_F(MatrixSuite, Determinant) {
-        Matrix<int> C(3);
-        C.setValue(1, 0, 0);
-        C.setValue(3, 0, 1);
-        C.setValue(5, 0, 2);
-        C.setValue(7, 1, 0);
-        C.setValue(8, 1, 1);
-        C.setValue(9, 1, 2);
-        C.setValue(11, 2, 0);
-        C.setValue(2, 2, 1);
-        C.setValue(14, 2, 2);
+        Matrix<float> C(3);
+        C.setValue(1., 0, 0);
+        C.setValue(3., 0, 1);
+        C.setValue(5., 0, 2);
+        C.setValue(7., 1, 0);
+        C.setValue(8., 1, 1);
+        C.setValue(9., 1, 2);
+        C.setValue(11., 2, 0);
+        C.setValue(2., 2, 1);
+        C.setValue(14., 2, 2);
 
         ASSERT_EQ(C.det(), -273);
 }

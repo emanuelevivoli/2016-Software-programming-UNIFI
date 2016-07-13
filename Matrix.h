@@ -4,15 +4,14 @@
 #include <utility>
 #include <stdexcept>
 
-#include <iostream>
-using namespace std;
-
 template <typename T>
 class Matrix {
 private:
     unsigned int rows;
     unsigned int columns;
     T *ptr;
+
+    Matrix<T> gauss() const;
 
 public:
     Matrix(unsigned int rows, unsigned int columns);
@@ -28,9 +27,9 @@ public:
     unsigned int getRows() const;
     unsigned int getColumns() const;
     std::pair<unsigned int, unsigned int> size() const;
-    Matrix<T> Row(unsigned int row) const;
-    Matrix<T> Column(unsigned int column) const;
-    Matrix<T> diag(unsigned int diag = 0) const;
+    Matrix<T> Row(unsigned int row) const throw(std::out_of_range);
+    Matrix<T> Column(unsigned int column) const throw(std::out_of_range);
+    Matrix<T> diag(int diag = 0) const throw(std::out_of_range);
 
     void setValue(const T& value, unsigned int row, unsigned int column) throw(std::out_of_range);
     T& getValue(unsigned int row, unsigned int column) const throw(std::out_of_range);
@@ -87,6 +86,34 @@ Matrix<T>::~Matrix() {
 }
 
 template <typename T>
+Matrix<T> Matrix<T>::gauss() const {
+    // implements the Gauss reduction algorithm to reduce the matrix
+
+    if (rows != columns)
+        throw std::logic_error("Matrix must be square");
+
+    Matrix<T> app(*this);
+
+    int n = rows;
+    float m = 0.;
+    for (int k = 0; k < n-1; k++) {
+        if (app.ptr[k * columns + k] == 0)
+            throw std::logic_error("Singular matrix");
+
+        for (int i = k+1; i < n; i++) {
+            m = app.ptr[i * columns + k] / app.ptr[k * columns + k];
+
+            for (int j = k+1; j < n; j++)
+                app.ptr[i * columns + j] = app.ptr[i * columns + j] - m * app.ptr[k * columns + j];
+
+            app.ptr[i * columns + k] = 0;
+        }
+    }
+
+    return app;
+}
+
+template <typename T>
 T Matrix<T>::max() const {
     T max = this->ptr[0];
     for (int i = 1; i < rows * columns; i++)
@@ -109,9 +136,13 @@ T Matrix<T>::det() const {
     if (rows != columns)
         throw std::logic_error("Matrix must be square in order to calculate determinant.");
 
-    // TODO
+    Matrix<T> r = gauss();
 
-    return 0;
+    T det = 1;
+    for (int i = 0; i < rows; i++)
+        det *= r.getValue(i, i);
+
+    return det;
 }
 
 template <typename T>
@@ -159,7 +190,7 @@ std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
 
 
 template <typename T>
-Matrix<T> Matrix<T>::Row(unsigned int row) const {
+Matrix<T> Matrix<T>::Row(unsigned int row) const throw(std::out_of_range) {
     if (row < 0 || row >= rows)
         throw std::out_of_range("Invalid row index");
 
@@ -171,7 +202,7 @@ Matrix<T> Matrix<T>::Row(unsigned int row) const {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::Column(unsigned int column) const {
+Matrix<T> Matrix<T>::Column(unsigned int column) const throw(std::out_of_range) {
     if (column < 0 || column >= columns)
         throw std::out_of_range("Invalid row index");
 
@@ -183,12 +214,17 @@ Matrix<T> Matrix<T>::Column(unsigned int column) const {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::diag(unsigned int diag) const {
+Matrix<T> Matrix<T>::diag(int diag) const throw(std::out_of_range) {
     Matrix<T> d(rows, columns);
 
-    for (int i = 0; i < rows; i++)
-        if (i + diag < columns)
-            d.setValue(getValue(i, i + diag), i, i + diag);
+    if ((diag < 0 && abs(diag) >= rows ) || (diag > 0 && abs(diag) >= columns))
+        throw std::out_of_range("Cannot find diagonal");
+
+    for (int i = 0; i < rows; i++) {
+        int col = i + diag;
+        if (col < columns)
+            d.setValue(getValue(i, col), i, col);
+    }
 
     return d;
 }
