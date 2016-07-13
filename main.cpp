@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "Matrix.h"
+#include "math_exception.h"
 
 int main() {
     Matrix<float> C(3);
@@ -65,7 +66,7 @@ int main() {
     cout << "B.getColumns() = " << B.getColumns() << endl;
     try {
         cout << "B.det() = " << B.det() << endl;
-    } catch (std::logic_error& e) {
+    } catch (math_exception& e) {
         cout << e.what() << endl;
     }
     cout << "B.rank() = " << B.rank() << endl;

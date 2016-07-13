@@ -6,9 +6,9 @@ using namespace std;
 class MatrixException : public exception{
 public:
     explicit MatrixException(const string& msg=""): _msg(msg){};
-    virtual ~MatrixException() throw(){}
+    virtual ~MatrixException() noexcept {}
 
-    virtual const char *what() const override {
+    virtual const char *what() const noexcept override {
         return _msg.c_str();
     };
 
