@@ -88,7 +88,7 @@ int main() {
 
     cout << "C.transpose()" << endl;
     C.transpose();
-    cout << "A =" << endl;
+    cout << "C =" << endl;
     for (int i = 0; i < C.getRows(); i++) {
         cout << "  ";
         for (int j = 0; j < C.getColumns(); j++) {
