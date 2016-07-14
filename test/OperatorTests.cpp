@@ -4,9 +4,9 @@
 #include "../math_exception.h"
 #include "../index_exception.h"
 
-class MatrixSuite : public ::testing::Test {
+class MatrixOperators : public ::testing::Test {
 public:
-    MatrixSuite() : A(3), B(3) { }
+    MatrixOperators() : A(3), B(3) { }
 protected:
     virtual void SetUp() {
             A.setValue(1, 0, 0);
@@ -35,7 +35,7 @@ protected:
 
 };
 
-TEST_F(MatrixSuite, Row) {
+TEST_F(MatrixOperators, Row) {
         Matrix<int> r(1, 3);
         r.setValue(1, 0, 0);
         r.setValue(2, 0, 1);
@@ -48,7 +48,7 @@ TEST_F(MatrixSuite, Row) {
         ASSERT_EQ(row, r);
 }
 
-TEST_F(MatrixSuite, Column) {
+TEST_F(MatrixOperators, Column) {
         Matrix<int> r(3, 1);
         r.setValue(1, 0, 0);
         r.setValue(4, 1, 0);
@@ -61,7 +61,7 @@ TEST_F(MatrixSuite, Column) {
         ASSERT_EQ(column, r);
 }
 
-TEST_F(MatrixSuite, OperatorSum) {
+TEST_F(MatrixOperators, OperatorSum) {
         Matrix<int> sum(3);
         sum.setValue(12, 0, 0);
         sum.setValue(14, 0, 1);
@@ -78,12 +78,12 @@ TEST_F(MatrixSuite, OperatorSum) {
         ASSERT_EQ(sum, somma);
 }
 
-TEST_F(MatrixSuite, OperatorSumInvalid) {
+TEST_F(MatrixOperators, OperatorSumInvalid) {
         Matrix<int> sum(4);
         ASSERT_THROW(A + sum, math_exception);
 }
 
-TEST_F(MatrixSuite, OperatorSub) {
+TEST_F(MatrixOperators, OperatorSub) {
         Matrix<int> sub(3);
         sub.setValue(-10, 0, 0);
         sub.setValue(-10, 0, 1);
@@ -98,12 +98,12 @@ TEST_F(MatrixSuite, OperatorSub) {
         ASSERT_EQ(sub, A - B);
 }
 
-TEST_F(MatrixSuite, OperatorSubInvalid) {
+TEST_F(MatrixOperators, OperatorSubInvalid) {
         Matrix<int> sub(4);
         ASSERT_THROW(A - sub, math_exception);
 }
 
-TEST_F(MatrixSuite, OperatorMul) {
+TEST_F(MatrixOperators, OperatorMul) {
         Matrix<int> mul(3);
         mul.setValue(90, 0, 0);
         mul.setValue(96, 0, 1);
@@ -120,12 +120,12 @@ TEST_F(MatrixSuite, OperatorMul) {
         ASSERT_EQ(mul, m);
 }
 
-TEST_F(MatrixSuite, OperatorMulInvalid) {
+TEST_F(MatrixOperators, OperatorMulInvalid) {
         Matrix<int> mul(4);
         ASSERT_THROW((A * mul), math_exception);
 }
 
-TEST_F(MatrixSuite, OperatorDiv) {
+TEST_F(MatrixOperators, OperatorDiv) {
         Matrix<int> C(3);
         C.setValue(2, 0, 0);
         C.setValue(4, 0, 1);
@@ -151,7 +151,7 @@ TEST_F(MatrixSuite, OperatorDiv) {
         ASSERT_EQ(mul, C / 2);
 }
 
-TEST_F(MatrixSuite, OperatorIntPow) {
+TEST_F(MatrixOperators, OperatorIntPow) {
         Matrix<int> mul(3);
         mul.setValue(468, 0, 0);
         mul.setValue(576, 0, 1);
@@ -168,7 +168,7 @@ TEST_F(MatrixSuite, OperatorIntPow) {
         ASSERT_EQ(mul, pow);
 }
 
-TEST_F(MatrixSuite, OperatorBinarySum) {
+TEST_F(MatrixOperators, OperatorBinarySum) {
         Matrix<int> sum(3);
         sum.setValue(12, 0, 0);
         sum.setValue(14, 0, 1);
@@ -183,12 +183,12 @@ TEST_F(MatrixSuite, OperatorBinarySum) {
         ASSERT_EQ(sum, A += B);
 }
 
-TEST_F(MatrixSuite, OperatorBinarySumInvalid) {
+TEST_F(MatrixOperators, OperatorBinarySumInvalid) {
         Matrix<int> sum(4);
         ASSERT_THROW(A += sum, math_exception);
 }
 
-TEST_F(MatrixSuite, OperatorBinarySub) {
+TEST_F(MatrixOperators, OperatorBinarySub) {
         Matrix<int> sub(3);
         sub.setValue(-10, 0, 0);
         sub.setValue(-10, 0, 1);
@@ -203,12 +203,12 @@ TEST_F(MatrixSuite, OperatorBinarySub) {
         ASSERT_EQ(sub, A -= B);
 }
 
-TEST_F(MatrixSuite, OperatorBinarySubInvalid) {
+TEST_F(MatrixOperators, OperatorBinarySubInvalid) {
         Matrix<int> sub(4);
         ASSERT_THROW(A -= sub, math_exception);
 }
 
-TEST_F(MatrixSuite, OperatorBinaryMul) {
+TEST_F(MatrixOperators, OperatorBinaryMul) {
         Matrix<int> mul(3);
         mul.setValue(90, 0, 0);
         mul.setValue(96, 0, 1);
@@ -223,12 +223,12 @@ TEST_F(MatrixSuite, OperatorBinaryMul) {
         ASSERT_EQ(mul, A *= B);
 }
 
-TEST_F(MatrixSuite, OperatorBinaryMulInvalid) {
+TEST_F(MatrixOperators, OperatorBinaryMulInvalid) {
         Matrix<int> mul(4);
         ASSERT_THROW(A *= mul, math_exception);
 }
 
-TEST_F(MatrixSuite, Determinant) {
+TEST_F(MatrixOperators, Determinant) {
         Matrix<float> C(3);
         C.setValue(1., 0, 0);
         C.setValue(3., 0, 1);
@@ -243,13 +243,13 @@ TEST_F(MatrixSuite, Determinant) {
         ASSERT_EQ(C.det(), -273);
 }
 
-TEST_F(MatrixSuite, DeterminantException) {
+TEST_F(MatrixOperators, DeterminantException) {
         Matrix<int> C(2, 3);
 
         ASSERT_THROW(C.det(), math_exception);
 }
 
-TEST_F(MatrixSuite, Reduced) {
+TEST_F(MatrixOperators, Reduced) {
         Matrix<float> C(3);
         C.setValue(1, 0, 0);
         C.setValue(3, 0, 1);
@@ -275,7 +275,7 @@ TEST_F(MatrixSuite, Reduced) {
         ASSERT_EQ(C.reduced(), reduced);
 }
 
-TEST_F(MatrixSuite, ReducedException) {
+TEST_F(MatrixOperators, ReducedException) {
         Matrix<int> C(3);
         C.setValue(1, 0, 0);
         C.setValue(2, 0, 1);
@@ -289,7 +289,7 @@ TEST_F(MatrixSuite, ReducedException) {
         ASSERT_THROW(C.reduced(), math_exception);
 }
 
-TEST_F(MatrixSuite, Transpose) {
+TEST_F(MatrixOperators, Transpose) {
         Matrix<int> C(3);
         C.setValue(1, 0, 0);
         C.setValue(4, 0, 1);
@@ -304,22 +304,22 @@ TEST_F(MatrixSuite, Transpose) {
         ASSERT_EQ(A.transpose(), C);
 }
 
-TEST_F(MatrixSuite, NotEqual) {
+TEST_F(MatrixOperators, NotEqual) {
         ASSERT_TRUE(A != B);
         ASSERT_FALSE(A == B);
 }
 
-TEST_F(MatrixSuite, Max) {
+TEST_F(MatrixOperators, Max) {
         ASSERT_EQ(A.max(), 9);
         ASSERT_EQ(B.max(), 19);
 }
 
-TEST_F(MatrixSuite, Min) {
+TEST_F(MatrixOperators, Min) {
         ASSERT_EQ(A.min(), 1);
         ASSERT_EQ(B.min(), 11);
 }
 
-TEST_F(MatrixSuite, Rank) {
+TEST_F(MatrixOperators, Rank) {
         ASSERT_EQ(A.rank(), 2);
         ASSERT_EQ(B.rank(), 2);
 

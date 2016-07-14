@@ -182,7 +182,7 @@ unsigned int Matrix<T>::rank() const {
             bool reduced = true;
             for (int i = k + 1; i < n; i++) {
                 if (app.ptr[i * columns + k] != 0) {
-                    for (int j = 0; j < rank; i++) {
+                    for (int j = 0; j < rank; j++) {
                         T temp = app.ptr[k * columns + j];
                         app.ptr[k * columns + j] = app.ptr[i * columns + j];
                         app.ptr[i * columns + j] = temp;

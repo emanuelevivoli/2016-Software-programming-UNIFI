@@ -2,7 +2,7 @@
 
 #include "../Matrix.h"
 
-TEST(Matrix, ConstructorRowColumns) {
+TEST(MatrixConstructors, ConstructorRowColumns) {
     Matrix<int> m(3, 4);
 
     ASSERT_EQ(3, m.getRows());
@@ -10,7 +10,7 @@ TEST(Matrix, ConstructorRowColumns) {
 }
 
 // TEST SQUARE CONSTRUCTOR AND SIZE FUNCTION
-TEST(Matrix, ConstructorSquare) {
+TEST(MatrixConstructors, ConstructorSquare) {
     Matrix<int> m(3);
 
     ASSERT_EQ(3, m.size().first);
