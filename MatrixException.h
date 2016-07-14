@@ -1,11 +1,12 @@
 #ifndef MATRIXTEMPLATE_MATRIXEXCEPTION_H
 #define MATRIXTEMPLATE_MATRIXEXCEPTION_H
+
 #include <stdexcept>
 #include <string>
-using namespace std;
-class MatrixException : public exception{
+
+class MatrixException : public std::exception {
 public:
-    explicit MatrixException(const string& msg=""): _msg(msg){};
+    explicit MatrixException(const std::string& msg=""): _msg(msg) {};
     virtual ~MatrixException() noexcept {}
 
     virtual const char *what() const noexcept override {
@@ -13,8 +14,7 @@ public:
     };
 
 private:
-    string _msg;
+    std::string _msg;
 };
-
 
 #endif //MATRIXTEMPLATE_MATRIXEXCEPTION_H

@@ -2,21 +2,20 @@
 using namespace std;
 
 #include "Matrix.h"
-#include "math_exception.h"
 
 int main() {
     Matrix<float> C(3);
     Matrix<float> B(3, 4);
 
-    C.setValue(1., 0, 0);
-    C.setValue(3., 0, 1);
-    C.setValue(5., 0, 2);
-    C.setValue(7., 1, 0);
-    C.setValue(8., 1, 1);
-    C.setValue(9., 1, 2);
-    C.setValue(11., 2, 0);
-    C.setValue(2., 2, 1);
-    C.setValue(14., 2, 2);
+    C.setValue(1, 0, 0);
+    C.setValue(3, 0, 1);
+    C.setValue(5, 0, 2);
+    C.setValue(7, 1, 0);
+    C.setValue(8, 1, 1);
+    C.setValue(9, 1, 2);
+    C.setValue(11, 2, 0);
+    C.setValue(2, 2, 1);
+    C.setValue(14, 2, 2);
 
     B.setValue(1, 0, 0);
     B.setValue(2, 0, 1);

@@ -2,6 +2,7 @@
 #define MATRIXTEMPLATE_MATRIX_H
 
 #include <utility>
+
 #include "math_exception.h"
 #include "index_exception.h"
 
@@ -155,7 +156,7 @@ Matrix<T> &Matrix<T>::transpose() {
 
     int app = rows;
     rows = columns;
-    columns = rows;
+    columns = app;
     return *this;
 }
 
