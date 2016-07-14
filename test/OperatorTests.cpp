@@ -19,17 +19,17 @@ protected:
 TEST_F(MatrixOperators, Row) {
         Matrix<int> r(1, 3, {1, 2, 3});
 
-        Matrix<int> row = A.Row(0);
+        Matrix<int> row = A.row(0);
 
         ASSERT_EQ(row.getRows(), 1);
         ASSERT_EQ(row.getColumns(), 3);
         ASSERT_EQ(row, r);
 }
 
-TEST_F(MatrixOperators, Column) {
+TEST_F(MatrixOperators, column) {
         Matrix<int> r(3, 1, {1, 4, 7});
 
-        Matrix<int> column = A.Column(0);
+        Matrix<int> column = A.column(0);
 
         ASSERT_EQ(column.getRows(), 3);
         ASSERT_EQ(column.getColumns(), 1);

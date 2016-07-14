@@ -17,8 +17,8 @@ private:
 public:
     Matrix(unsigned int rows, unsigned int columns);
     Matrix(unsigned int dim);
-    Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v);
-    Matrix(unsigned int dim, const std::vector<T>& v);
+    Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v) throw(index_exception);
+    Matrix(unsigned int dim, const std::vector<T>& v) throw(index_exception);
     Matrix(const Matrix<T>& M);
     virtual ~Matrix();
 
@@ -31,8 +31,8 @@ public:
     unsigned int getRows() const;
     unsigned int getColumns() const;
     std::pair<unsigned int, unsigned int> size() const;
-    Matrix<T> Row(unsigned int row) const throw(index_exception);
-    Matrix<T> Column(unsigned int column) const throw(index_exception);
+    Matrix<T> row(unsigned int row) const throw(index_exception);
+    Matrix<T> column(unsigned int column) const throw(index_exception);
     Matrix<T> diag(int diag = 0) const throw(index_exception);
 
     void setValue(const T& value, unsigned int row, unsigned int column) throw(index_exception);
@@ -73,7 +73,7 @@ Matrix<T>::Matrix(unsigned int dim)
 }
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v)
+Matrix<T>::Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v) throw(index_exception)
         : rows(rows), columns(columns), ptr(new T[rows * columns]) {
     if (v.size() != rows * columns)
         throw index_exception("Matrix and vector sizes are not equal");
@@ -83,7 +83,7 @@ Matrix<T>::Matrix(unsigned int rows, unsigned int columns, const std::vector<T>&
 }
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int dim, const std::vector<T>& v)
+Matrix<T>::Matrix(unsigned int dim, const std::vector<T>& v) throw(index_exception)
         : rows(dim), columns(dim), ptr(new T[rows * columns]) {
     if (v.size() != rows * columns)
         throw index_exception("Matrix and vector sizes are not equal");
@@ -114,7 +114,7 @@ Matrix<T> Matrix<T>::reduced() const throw(math_exception){
     Matrix<T> app(*this);
 
     int n = rows;
-    float m = 0.;
+    float m = 0;
     for (int k = 0; k < n-1; k++) {
         if (app.ptr[k * columns + k] == 0)
             throw math_exception("Singular matrix");
@@ -151,7 +151,7 @@ T Matrix<T>::min() const {
 }
 
 template <typename T>
-T Matrix<T>::det() const throw(math_exception){
+T Matrix<T>::det() const throw(math_exception) {
     if (rows != columns)
         throw math_exception("Matrix must be square in order to calculate determinant.");
 
@@ -250,7 +250,7 @@ std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
 
 
 template <typename T>
-Matrix<T> Matrix<T>::Row(unsigned int row) const throw(index_exception) {
+Matrix<T> Matrix<T>::row(unsigned int row) const throw(index_exception) {
     if (row < 0 || row >= rows)
         throw index_exception("Invalid row index");
 
@@ -262,7 +262,7 @@ Matrix<T> Matrix<T>::Row(unsigned int row) const throw(index_exception) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::Column(unsigned int column) const throw(index_exception) {
+Matrix<T> Matrix<T>::column(unsigned int column) const throw(index_exception) {
     if (column < 0 || column >= columns)
         throw index_exception("Invalid row index");
 
