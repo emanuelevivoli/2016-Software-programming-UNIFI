@@ -38,6 +38,8 @@ public:
     void setValue(const T& value, unsigned int row, unsigned int column) throw(index_exception);
     T& getValue(unsigned int row, unsigned int column) const throw(index_exception);
 
+    std::vector<T> vector() const;
+
     Matrix<T>& operator=(const Matrix<T>& rhs);
 
     Matrix<T> operator+(const Matrix<T>& rhs) const throw(math_exception);
@@ -301,6 +303,11 @@ T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(index_
     if (row < 0 || row >= rows || column < 0 || column >= columns)
         throw index_exception("Invalid index");
     return ptr[row*columns + column];
+}
+
+template <typename T>
+std::vector<T> Matrix<T>::vector() const {
+    return std::vector<T>(ptr, ptr + (rows * columns));
 }
 
 

@@ -7,12 +7,16 @@
 class MatrixOperators : public ::testing::Test {
 public:
     MatrixOperators()
-            : A(3, 3, {1, 2, 3, 4, 5, 6, 7, 8, 9}), B(3, 3, {11, 12, 13, 14, 15, 16, 17, 18, 19}) { }
+            : A(3, 3, {1, 2, 3, 4, 5, 6, 7, 8, 9}),
+              B(3, 3, {11, 12, 13, 14, 15, 16, 17, 18, 19}),
+              col(3, 1, {1, 2, 3}) { }
 protected:
     virtual void SetUp() { }
 
     Matrix<int> A;
     Matrix<int> B;
+
+    Matrix<int> col;    // vettore colonna
 
 };
 
@@ -176,4 +180,23 @@ TEST_F(MatrixOperators, Rank) {
 
         Matrix<int> C(3, 3, {1, 3, 5, 7, 8, 9, 11, 2, 14});
         ASSERT_EQ(C.rank(), 3);
+}
+
+TEST_F(MatrixOperators, VectorProduct) {
+        Matrix<int> mul(3, 1, {14, 32, 50});
+
+        ASSERT_EQ(A * col, mul);
+}
+
+TEST_F(MatrixOperators, VectorDeterminant) {
+        ASSERT_THROW(col.det(), math_exception);
+}
+
+TEST_F(MatrixOperators, MatrixVectorSum) {
+        ASSERT_THROW(A + col, math_exception);
+}
+
+TEST_F(MatrixOperators, GetStdVector) {
+        ASSERT_EQ(col.vector().size(), 3);
+        ASSERT_EQ(col.vector(), std::vector<int>({1, 2, 3}));
 }

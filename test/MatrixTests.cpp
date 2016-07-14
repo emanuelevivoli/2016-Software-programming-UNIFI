@@ -17,4 +17,17 @@ TEST(MatrixConstructors, ConstructorSquare) {
     ASSERT_EQ(3, m.size().second);
 }
 
+TEST(MatrixConstructors, ConstructorVector) {
+    Matrix<int> m(3, {1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+    ASSERT_EQ(m.getValue(0, 0), 1);
+    ASSERT_EQ(m.getValue(0, 1), 2);
+    ASSERT_EQ(m.getValue(0, 2), 3);
+    ASSERT_EQ(m.getValue(1, 0), 4);
+    ASSERT_EQ(m.getValue(1, 1), 5);
+    ASSERT_EQ(m.getValue(1, 2), 6);
+    ASSERT_EQ(m.getValue(2, 0), 7);
+    ASSERT_EQ(m.getValue(2, 1), 8);
+    ASSERT_EQ(m.getValue(2, 2), 9);
+}
 
