@@ -2,6 +2,7 @@
 #define MATRIXTEMPLATE_MATRIX_H
 
 #include <utility>
+#include <vector>
 
 #include "math_exception.h"
 #include "index_exception.h"
@@ -16,6 +17,7 @@ private:
 public:
     Matrix(unsigned int rows, unsigned int columns);
     Matrix(unsigned int dim);
+    Matrix(unsigned int rows, unsigned int columns, std::vector<T> v);
     Matrix(const Matrix<T>& M);
     virtual ~Matrix();
 
@@ -67,6 +69,16 @@ Matrix<T>::Matrix(unsigned int dim)
         : rows(dim), columns(dim), ptr(new T[rows * columns]) {
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = 0;
+}
+
+template <typename T>
+Matrix<T>::Matrix(unsigned int rows, unsigned int columns, std::vector<T> v)
+        : rows(rows), columns(columns), ptr(new T[rows * columns]) {
+    if (v.size() != rows * columns)
+        throw index_exception("Matrix and vector sizes are not equal");
+
+    for (int i = 0; i < rows * columns; i++)
+        ptr[i] = v[i];
 }
 
 template <typename T>

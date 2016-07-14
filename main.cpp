@@ -4,31 +4,8 @@ using namespace std;
 #include "Matrix.h"
 
 int main() {
-    Matrix<float> C(3);
-    Matrix<float> B(3, 4);
-
-    C.setValue(1, 0, 0);
-    C.setValue(3, 0, 1);
-    C.setValue(5, 0, 2);
-    C.setValue(7, 1, 0);
-    C.setValue(8, 1, 1);
-    C.setValue(9, 1, 2);
-    C.setValue(11, 2, 0);
-    C.setValue(2, 2, 1);
-    C.setValue(14, 2, 2);
-
-    B.setValue(1, 0, 0);
-    B.setValue(2, 0, 1);
-    B.setValue(3, 0, 2);
-    B.setValue(3, 0, 3);
-    B.setValue(4, 1, 0);
-    B.setValue(5, 1, 1);
-    B.setValue(6, 1, 2);
-    B.setValue(3, 1, 3);
-    B.setValue(7, 2, 0);
-    B.setValue(8, 2, 1);
-    B.setValue(9, 2, 2);
-    B.setValue(3, 2, 3);
+    Matrix<float> C(3, 3, {1, 3, 5, 7, 8, 9, 11, 2, 14});
+    Matrix<float> B(3, 4, {1, 2, 3, 3, 4, 5, 6, 3, 7, 8, 9, 3});
 
     cout << "C =" << endl;
     for (int i = 0; i < C.getRows(); i++) {
