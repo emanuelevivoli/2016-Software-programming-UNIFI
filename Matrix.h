@@ -106,10 +106,9 @@ Matrix<T>::~Matrix() {
     delete[] ptr;
 }
 
+// implements the Gauss reduction algorithm to reduce the matrix
 template <typename T>
 Matrix<T> Matrix<T>::reduced() const throw(math_exception){
-    // implements the Gauss reduction algorithm to reduce the matrix
-
     if (rows != columns)
         throw math_exception("Matrix must be square");
 
@@ -134,6 +133,7 @@ Matrix<T> Matrix<T>::reduced() const throw(math_exception){
     return app;
 }
 
+// returns the maximum value of the matrix
 template <typename T>
 T Matrix<T>::max() const {
     T max = this->ptr[0];
@@ -143,6 +143,7 @@ T Matrix<T>::max() const {
     return max;
 }
 
+// return the minimum value of the matrix
 template <typename T>
 T Matrix<T>::min() const {
     T min = this->ptr[0];
@@ -152,6 +153,7 @@ T Matrix<T>::min() const {
     return min;
 }
 
+// calculates the determinant of the matrix
 template <typename T>
 T Matrix<T>::det() const throw(math_exception) {
     if (rows != columns)
@@ -166,6 +168,7 @@ T Matrix<T>::det() const throw(math_exception) {
     return det;
 }
 
+// transposes the matrix
 template <typename T>
 Matrix<T> &Matrix<T>::transpose() {
     T* t = new T[rows * columns];
@@ -184,6 +187,7 @@ Matrix<T> &Matrix<T>::transpose() {
     return *this;
 }
 
+// calculates the rank of the matrix
 template <typename T>
 unsigned int Matrix<T>::rank() const {
     unsigned int rank = columns;
@@ -232,17 +236,19 @@ unsigned int Matrix<T>::rank() const {
 }
 
 
-
+// returns the number of rows
 template <typename T>
 unsigned int Matrix<T>::getRows() const {
     return rows;
 }
 
+// returns the number of columns
 template <typename T>
 unsigned int Matrix<T>::getColumns() const {
     return columns;
 }
 
+// return the size of the matrix (rows and columns)
 template <typename T>
 std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
     return std::pair<unsigned int, unsigned int>(rows, columns);
@@ -250,7 +256,7 @@ std::pair<unsigned int, unsigned int> Matrix<T>::size() const {
 
 
 
-
+// returns a vector representing the specified row of the matrix
 template <typename T>
 Matrix<T> Matrix<T>::row(unsigned int row) const throw(index_exception) {
     if (row < 0 || row >= rows)
@@ -263,6 +269,7 @@ Matrix<T> Matrix<T>::row(unsigned int row) const throw(index_exception) {
     return r;
 }
 
+// returns a vector representing the specified column of the matrix
 template <typename T>
 Matrix<T> Matrix<T>::column(unsigned int column) const throw(index_exception) {
     if (column < 0 || column >= columns)
@@ -275,6 +282,7 @@ Matrix<T> Matrix<T>::column(unsigned int column) const throw(index_exception) {
     return c;
 }
 
+// returns a matrix containing only the diagonal elements
 template <typename T>
 Matrix<T> Matrix<T>::diag(int diag) const throw(index_exception) {
     Matrix<T> d(rows, columns);
@@ -291,6 +299,7 @@ Matrix<T> Matrix<T>::diag(int diag) const throw(index_exception) {
     return d;
 }
 
+// sets the value at given indexes
 template <typename T>
 void Matrix<T>::setValue(const T &value, unsigned int row, unsigned int column) throw(index_exception) {
     if (row < 0 || row >= rows || column < 0 || column >= columns)
@@ -298,6 +307,7 @@ void Matrix<T>::setValue(const T &value, unsigned int row, unsigned int column) 
     ptr[row * columns + column] = value;
 }
 
+// returns the value at given indexes
 template <typename T>
 T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(index_exception) {
     if (row < 0 || row >= rows || column < 0 || column >= columns)
@@ -305,6 +315,7 @@ T &Matrix<T>::getValue(unsigned int row, unsigned int column) const throw(index_
     return ptr[row*columns + column];
 }
 
+// return a std::vector with the linear representation of the matrix
 template <typename T>
 std::vector<T> Matrix<T>::vector() const {
     return std::vector<T>(ptr, ptr + (rows * columns));
