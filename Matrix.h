@@ -35,7 +35,7 @@ public:
     void setValue(const T& value, unsigned int row, unsigned int column) throw(index_exception);
     T& getValue(unsigned int row, unsigned int column) const throw(index_exception);
 
-    const Matrix<T>& operator=(const Matrix<T>& rhs);
+    Matrix<T>& operator=(const Matrix<T>& rhs);
 
     Matrix<T> operator+(const Matrix<T>& rhs) const throw(math_exception);
     Matrix<T> operator-(const Matrix<T>& rhs) const throw(math_exception);
@@ -47,7 +47,6 @@ public:
     Matrix<T>& operator-=(const Matrix<T>& rhs) throw(math_exception);
     Matrix<T>& operator*=(const Matrix<T>& rhs) throw(math_exception);
     Matrix<T>& operator/=(const T& rhs);
-    Matrix<T>& operator^=(unsigned int pow) const;
 
     bool operator==(const Matrix<T>& rhs) const;
     bool operator!=(const Matrix<T>& rhs) const;
@@ -154,7 +153,7 @@ Matrix<T> &Matrix<T>::transpose() {
     delete[] ptr;
     ptr = t;
 
-    int app = rows;
+    unsigned int app = rows;
     rows = columns;
     columns = app;
     return *this;
@@ -346,7 +345,7 @@ Matrix<T> Matrix<T>::operator^(unsigned int pow) const {
 }
 
 template <typename T>
-const Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
+Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
     this->rows = rhs.rows;
     this->columns = rhs.columns;
 
@@ -355,6 +354,8 @@ const Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs) {
 
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = rhs.ptr[i];
+
+    return *this;
 }
 
 //BINARY OPERATOR
@@ -410,16 +411,6 @@ Matrix<T> &Matrix<T>::operator/=(const T &rhs) {
         this->ptr[i] = this->ptr[i] / rhs;
 
     return *this;
-}
-
-template <typename T>
-Matrix<T> &Matrix<T>::operator^=(unsigned int pow) const {
-    Matrix<T> p(*this);
-
-    for (int i = 1; i < pow; i++)
-        p *= *this;
-
-    return (Matrix<T> &) *this;
 }
 
 
