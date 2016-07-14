@@ -15,8 +15,8 @@ private:
     T *ptr;
 
 public:
-    Matrix(unsigned int rows, unsigned int columns);
-    Matrix(unsigned int dim);
+    Matrix(unsigned int rows, unsigned int columns) throw(index_exception);
+    explicit Matrix(unsigned int dim) throw(index_exception);
     Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v) throw(index_exception);
     Matrix(unsigned int dim, const std::vector<T>& v) throw(index_exception);
     Matrix(const Matrix<T>& M);
@@ -28,17 +28,18 @@ public:
     Matrix<T>& transpose();
     Matrix<T> reduced() const throw(math_exception);
     unsigned int rank() const;
+
     unsigned int getRows() const;
     unsigned int getColumns() const;
     std::pair<unsigned int, unsigned int> size() const;
+
     Matrix<T> row(unsigned int row) const throw(index_exception);
     Matrix<T> column(unsigned int column) const throw(index_exception);
     Matrix<T> diag(int diag = 0) const throw(index_exception);
+    std::vector<T> vector() const;
 
     void setValue(const T& value, unsigned int row, unsigned int column) throw(index_exception);
     T& getValue(unsigned int row, unsigned int column) const throw(index_exception);
-
-    std::vector<T> vector() const;
 
     Matrix<T>& operator=(const Matrix<T>& rhs);
 
@@ -60,23 +61,37 @@ public:
 
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int columns)
-        : rows(rows), columns(columns) , ptr(new T[rows * columns]) {
+Matrix<T>::Matrix(unsigned int rows, unsigned int columns) throw(index_exception)
+        : rows(rows), columns(columns) {
+    if (rows <= 0 || columns <= 0)
+        throw index_exception("Invalid number of rows or columns");
+
+    ptr = new T[rows * columns];
 
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = 0;
 }
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int dim)
-        : rows(dim), columns(dim), ptr(new T[rows * columns]) {
+Matrix<T>::Matrix(unsigned int dim) throw(index_exception)
+        : rows(dim), columns(dim) {
+    if (rows <= 0 || columns <= 0)
+        throw index_exception("Invalid number of rows or columns");
+
+    ptr = new T[rows * columns];
+
     for (int i = 0; i < rows * columns; i++)
         ptr[i] = 0;
 }
 
 template <typename T>
 Matrix<T>::Matrix(unsigned int rows, unsigned int columns, const std::vector<T>& v) throw(index_exception)
-        : rows(rows), columns(columns), ptr(new T[rows * columns]) {
+        : rows(rows), columns(columns) {
+    if (rows <= 0 || columns <= 0)
+        throw index_exception("Invalid number of rows or columns");
+
+    ptr = new T[rows * columns];
+
     if (v.size() != rows * columns)
         throw index_exception("Matrix and vector sizes are not equal");
 
@@ -86,7 +101,12 @@ Matrix<T>::Matrix(unsigned int rows, unsigned int columns, const std::vector<T>&
 
 template <typename T>
 Matrix<T>::Matrix(unsigned int dim, const std::vector<T>& v) throw(index_exception)
-        : rows(dim), columns(dim), ptr(new T[rows * columns]) {
+        : rows(dim), columns(dim) {
+    if (rows <= 0 || columns <= 0)
+        throw index_exception("Invalid number of rows or columns");
+
+    ptr = new T[rows * columns];
+
     if (v.size() != rows * columns)
         throw index_exception("Matrix and vector sizes are not equal");
 
