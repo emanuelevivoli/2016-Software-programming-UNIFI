@@ -31,3 +31,6 @@ TEST(MatrixConstructors, ConstructorVector) {
     ASSERT_EQ(m.getValue(2, 2), 9);
 }
 
+TEST(MatrixConstructors, ConstructorVectorException) {
+    ASSERT_THROW(Matrix<int>(8, 8, {1, 2}), index_exception);
+}
